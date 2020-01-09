@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('{% static "img/sfm.jpg" %}')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="site-heading">
+            <h1>Görkem Blog</h1>
+            <span class="subheading">Görkem Doğan blog sayfasına Hoş Geldiniz..</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        {% for post in object_list %}
+
+          <div class="post-preview">
+            <a href="{% url 'post' post.pk %}">
+              <h2 class="post-title">
+                {{ post.title }}
+              </h2>
+              <h3 class="post-subtitle">
+                {{ post.subtitle }}
+              </h3>
+            </a>
+            <p class="post-meta">Tarafından gönderildi
+              <a href="#">{{ post.author }}</a>
+              on {{post.date|date:"F d, Y"}} </p>
+          </div>
+          <hr>
+        {% endfor %}
+
+        <!-- Pager -->
+        <div class="clearfix">
+
+          {% if is_paginated %}
+
+            {% if page_obj.number == 1 %}
+              <a class="btn btn-primary float-right" href="?page=2"> Eski Postlar &rarr;</a>
+            {% endif %}
+
+            {% if page_obj.has_previous %}
+              <a class="btn btn-outline-info" href="/">&laquo;</a>
+              <a class="btn btn-outline-info" href="?page={{ page_obj.previous_page_number }}">GERİ &lsaquo;</a>
+<!-- previous_page_number = bir önceki sayfanın numarası -->
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %} <!--page obj. range eşit oluyor-->
+              {% if page_obj.number == num and page_obj.number != 1 %} <!-- sayfa sayısı 1'e eşit oldugunda gösterme -->
+                <a class="btn btn-outline-info" href="?page={{ num }}">{{ num }}</a>
+              {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next and page_obj.number != 1 %}
+              <a class="btn btn-outline-info" href="?page={{ page_obj.next_page_number }}">İLERİ&rsaquo;</a>
+              <a class="btn btn-outline-info" href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
+            {% endif %}
+
+
+
+
+
+
+
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+{% endblock content %}
